@@ -144,3 +144,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+example/node_modules
+example/.serverless

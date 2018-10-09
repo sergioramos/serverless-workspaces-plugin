@@ -10,8 +10,6 @@
   ],
   "author": "Sérgio Ramos <mail@sergioramos.me>",
   "files": [
-    "license",
-    "package.json",
     "index.js"
   ],
   "main": "index.js",
@@ -26,6 +24,7 @@
     "apr-reduce": "^3.0.3",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.0",
+    "globby": "^8.0.1",
     "resolve-pkg": "^1.0.0"
   },
   "devDependencies": {
@@ -33,7 +32,7 @@
     "eslint": "^5.6.1",
     "eslint-config-prettier": "^3.1.0",
     "eslint-config-xo-space": "^0.20.0",
-    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "eslint-plugin-markdown": "^1.0.0-beta.8",
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.14.3"
   }

@@ -1,0 +1,8 @@
+{
+  "name": "@serverless-workspaces-plugin-example/remove",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@serverless-workspaces-plugin-example/handler": "^1.0.0"
+  }
+}

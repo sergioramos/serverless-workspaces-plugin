@@ -3,9 +3,20 @@ const { default: ForEach } = require('apr-for-each');
 const Intercept = require('apr-intercept');
 const Reduce = require('apr-reduce');
 const Execa = require('execa');
-const { symlink, unlink, ensureDir, readdir, stat, copy } = require('fs-extra');
+const Globby = require('globby');
 const Resolve = require('resolve-pkg');
 const { join, dirname } = require('path');
+
+const {
+  symlink,
+  unlink,
+  ensureDir,
+  readdir,
+  stat,
+  copy,
+  ensureFile,
+  remove,
+} = require('fs-extra');
 
 const Link = async (target, path) => {
   await ensureDir(dirname(path));
@@ -30,6 +41,7 @@ module.exports = class ServerlessLernaPlugin {
       'package:cleanup': this.cleanup.bind(this),
       'package:initialize': this.initialize.bind(this),
       'after:package:initialize': this.copyWorkspaces.bind(this),
+      'after:package:finalize': this.cleanup.bind(this),
     };
   }
 
@@ -89,6 +101,12 @@ module.exports = class ServerlessLernaPlugin {
       );
 
       await ForEach(removable, async location => Unlink(location));
+
+      const pattern = `${nodeModules}/**/.serverless-workspaces-plugin-copied`;
+      await ForEach(
+        await Globby([pattern]),
+        async file => await remove(dirname(file)),
+      );
     });
   }
 
@@ -147,6 +165,7 @@ module.exports = class ServerlessLernaPlugin {
         const a = join(this.cwd, source);
         const b = join(this.cwd, location, 'node_modules', name);
         await copy(a, b);
+        await ensureFile(join(b, '.serverless-workspaces-plugin-copied'));
       });
 
       await ForEach(locals, async name => {

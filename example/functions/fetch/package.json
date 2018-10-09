@@ -1,0 +1,8 @@
+{
+  "name": "@serverless-workspaces-plugin-example/fetch",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@serverless-workspaces-plugin-example/handler": "^1.0.0"
+  }
+}
