@@ -158,6 +158,11 @@ module.exports = class ServerlessLernaPlugin {
           'node_modules',
         );
 
+        const [, st] = await Intercept(stat(root));
+        if (!st) {
+          return;
+        }
+
         const modules = await readdir(root, { withFileTypes: true });
         await ForEach(
           modules.filter(file => file.isSymbolicLink()),

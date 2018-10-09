@@ -9,6 +9,11 @@
     "lerna"
   ],
   "author": "Sérgio Ramos <mail@sergioramos.me>",
+  "files": [
+    "license",
+    "package.json",
+    "index.js"
+  ],
   "main": "index.js",
   "scripts": {
     "fmt": "prettier --config .prettierrc --write '**/*'",

@@ -4,9 +4,9 @@
 
 ## table of contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [License](#license)
+- [install](#install)
+- [usage](#usage)
+- [license](#license)
 
 ## install
 
@@ -20,6 +20,8 @@ yarn add serverless-workspaces-plugin -W
 plugins:
   - serverless-workspaces-plugin
 ```
+
+check out the [example](/example) for more
 
 ## license
 
