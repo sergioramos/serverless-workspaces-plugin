@@ -1,6 +1,6 @@
 {
   "name": "serverless-workspaces-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "BSD-3-Clause",
   "description": "resolve and link hoisted dependencies when packaging",
   "keywords": [
