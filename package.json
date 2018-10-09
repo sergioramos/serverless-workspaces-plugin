@@ -1,6 +1,6 @@
 {
   "name": "serverless-workspaces-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Sérgio Ramos <mail@sergioramos.me>",
   "license": "BSD-3-Clause",
