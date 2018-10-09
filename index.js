@@ -5,7 +5,7 @@ const Reduce = require('apr-reduce');
 const Execa = require('execa');
 const { symlink, unlink, ensureDir, readdir, stat, copy } = require('fs-extra');
 const Resolve = require('resolve-pkg');
-const { join, dirname, basename } = require('path');
+const { join, dirname } = require('path');
 
 const Link = async (target, path) => {
   await ensureDir(dirname(path));
@@ -43,8 +43,9 @@ module.exports = class ServerlessLernaPlugin {
     });
 
     const { data } = JSON.parse(stdout);
-    const workspaces = (this.workspaces = JSON.parse(data));
-    return workspaces;
+    this.workspaces = JSON.parse(data);
+
+    return this.workspaces;
   }
 
   async initialize() {
@@ -60,28 +61,28 @@ module.exports = class ServerlessLernaPlugin {
     await ForEach(workspaces, async ({ location }, name) => {
       this.log(`cleanup: iterating over workspace ${name}`);
 
-      const node_modules = join(this.cwd, location, 'node_modules');
-      const [, st] = await Intercept(stat(node_modules));
+      const nodeModules = join(this.cwd, location, 'node_modules');
+      const [, st] = await Intercept(stat(nodeModules));
 
       if (!st || !st.isDirectory()) {
         return;
       }
 
-      const files = await readdir(node_modules, { withFileTypes: true });
+      const files = await readdir(nodeModules, { withFileTypes: true });
       const symlinks = files.filter(file => file.isSymbolicLink());
-      const scoped = files.filter(({ name }) => /^\@/.test(name));
+      const scoped = files.filter(({ name }) => /^@/.test(name));
 
       const removable = await Reduce(
         scoped,
         async (removable, { name }) => {
-          const n_node_modules = join(node_modules, name);
-          const [, st] = await Intercept(stat(n_node_modules));
+          const nNodeModules = join(nodeModules, name);
+          const [, st] = await Intercept(stat(nNodeModules));
 
           if (!st || !st.isDirectory()) {
             return;
           }
 
-          const files = await readdir(n_node_modules, { withFileTypes: true });
+          const files = await readdir(nNodeModules, { withFileTypes: true });
           return removable.concat(files.filter(file => file.isSymbolicLink()));
         },
         symlinks,
@@ -117,12 +118,7 @@ module.exports = class ServerlessLernaPlugin {
         await Link(location, join(workspace, 'node_modules', name));
       }
 
-      const pkg = join(location, 'package.json');
-      const { dependencies = {} } = require(pkg);
-
-      await ForEach(dependencies, async (_, name) => {
-        await this.linkPackage(workspace, dirname(pkg), resolved);
-      });
+      await this.linkPackage(workspace, location, resolved);
     });
   }
 
@@ -165,7 +161,7 @@ module.exports = class ServerlessLernaPlugin {
         const modules = await readdir(root, { withFileTypes: true });
         await ForEach(
           modules.filter(file => file.isSymbolicLink()),
-          async ({ name }) => await Unlink(join(root, name)),
+          async ({ name }) => Unlink(join(root, name)),
         );
       });
     });
