@@ -1,9 +1,11 @@
 {
   "name": "serverless-workspaces-plugin",
   "version": "1.0.1",
-  "main": "index.js",
-  "author": "Sérgio Ramos <mail@sergioramos.me>",
   "license": "BSD-3-Clause",
+  "description": "resolve and link hoisted dependencies when packaging",
+  "keywords": ["serverless", "yarn", "lerna"],
+  "author": "Sérgio Ramos <mail@sergioramos.me>",
+  "main": "index.js",
   "scripts": {
     "fmt": "prettier --config .prettierrc --write '**/*'",
     "lint": "eslint . --fix --ext .js --ext .md"
